@@ -1,0 +1,84 @@
+{
+  "templateType" : "app",
+  "label" : "A Template created through VS Code",
+  "name" : "Welcome",
+  "assetVersion" : 54.0,
+  "variableDefinition" : "variables.json",
+  "uiDefinition" : "ui.json",
+  "rules" : [
+    {
+      "type" : "templateToApp",
+      "file" : "template-to-app-rules.json"
+    },
+    {
+      "type" : "appToTemplate",
+      "file" : "app-to-template-rules.json"
+    }
+  ],
+  "releaseInfo" : {
+    "templateVersion" : "1.1",
+    "notesFile" : "releaseNotes.html"
+  },
+  "folderDefinition" : "folder.json",
+  "externalFiles" : [ ],
+  "lenses" : [ ],
+  "dashboards" : [
+    {
+      "label" : "Welcome to Analytics",
+      "name" : "Welcome_to_Analytics_tp",
+      "condition" : "${Variables.Overrides.createAllDashboards}",
+      "file" : "dashboards/Welcome_to_Analytics.json"
+    }
+  ],
+  "customAttributes" : [
+    {
+      "label" : "Features",
+      "values" : [
+        "Dataflow",
+        "Prebuilt Dashboards"
+      ]
+    },
+    {
+      "label" : "Salesforce Objects",
+      "values" : [
+        "Standard Objects",
+        "Custom Objects"
+      ]
+    },
+    {
+      "label" : "Publisher",
+      "values" : [
+        "ISV ABC"
+      ]
+    }
+  ],
+  "tags" : [
+    "Trending",
+    "Manager",
+    "Operations",
+    "Executive"
+  ],
+  "components" : [ ],
+  "eltDataflows" : [ ],
+  "recipes" : [ ],
+  "datasetFiles" : [ ],
+  "storedQueries" : [ ],
+  "imageFiles" : [ ],
+  "extendedTypes" : { },
+  "templateDependencies" : [ ],
+  "icons" : {
+    "appBadge" : {
+      "name" : "16.png"
+    },
+    "templateBadge" : {
+      "name" : "trailhead_icon_160x160_p1"
+    },
+    "templatePreviews" : [
+      {
+        "name" : "tablegridexpansion",
+        "label" : "Table Grid Expansion Analytics",
+        "description" : "Create an app using the Table Grid Exoansion Analytics template with an Expandable/Collapsible raw data table showing ID column, all dimensions, and all metrics"
+      }
+    ]
+  }
+}

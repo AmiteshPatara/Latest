@@ -1,0 +1,22 @@
+{
+  "constants" : [ ],
+  "macros" : [ ],
+  "rules" : [ {
+      "name": "SetTitle",
+      "appliesTo": [
+        {
+          "type": "dashboard",
+          "name": "*"
+        }
+      ],
+    "actions": [
+        
+        {
+          "action": "set",
+          "description": "Set the value for state.widgets.text_1.parameters.text in all dashboards.",
+          "path": "$.state.widgets.text_1.parameters.content.richTextContent[0]['insert']",
+          "value": "${Variables.DashboardTitle}"
+        }
+      ]
+    }]
+}
