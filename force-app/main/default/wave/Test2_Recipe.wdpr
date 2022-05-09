@@ -1,0 +1,441 @@
+{
+  "version" : "54.0",
+  "nodes" : {
+    "FORMULA0" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Date_formula",
+          "label" : "Date Formula",
+          "formulaExpression" : "string(Date)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EXTRACT0" : {
+      "action" : "extractGrains",
+      "sources" : [ "FORMULA0" ],
+      "parameters" : {
+        "grainExtractions" : [ ]
+      }
+    },
+    "AGGREGATE1" : {
+      "action" : "aggregate",
+      "sources" : [ "EXTRACT0" ],
+      "parameters" : {
+        "aggregations" : [ {
+          "action" : "COUNT",
+          "name" : "COUNT_Rows",
+          "label" : "Rows"
+        } ],
+        "groupings" : [ "Date_formula" ],
+        "pivots" : [ ],
+        "nodeType" : "STANDARD"
+      }
+    },
+    "JOIN0" : {
+      "action" : "join",
+      "sources" : [ "AGGREGATE1", "LOAD_DATASET2" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "COUNT_Rows" ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "CROSS",
+        "rightQualifier" : "Filter0"
+      }
+    },
+    "FORMULA1" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Date_formula_RealData",
+          "label" : "Date Formula_RealData",
+          "formulaExpression" : "string(Date)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA2" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Date_formula_RealData_formula",
+          "label" : "Date Formula_RealData Formula",
+          "formulaExpression" : "concat(Date_formula_RealData,'-',Emp_No)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA3" : {
+      "action" : "formula",
+      "sources" : [ "JOIN0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Date_formula_formula",
+          "label" : "Date Formula Formula",
+          "formulaExpression" : "concat(Date_formula,'-',\"Filter0.Emp_No\")",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "JOIN1" : {
+      "action" : "join",
+      "sources" : [ "FORMULA3", "FORMULA2" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LEFT_OUTER",
+        "leftKeys" : [ "Date_formula_formula" ],
+        "rightQualifier" : "Transform1",
+        "rightKeys" : [ "Date_formula_RealData_formula" ]
+      }
+    },
+    "REPLACE0" : {
+      "action" : "formula",
+      "sources" : [ "JOIN1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Transform1.Attendance_replace",
+          "newProperties" : {
+            "name" : "Transform1.Attendance"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Transform1.Attendance" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Transform1.Attendance_replace",
+          "label" : "Attendance",
+          "formulaExpression" : "coalesce(\"Transform1.Attendance\", null, 'N')",
+          "precision" : 255
+        } ]
+      }
+    },
+    "DROP_FIELDS0" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA4" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Date_formula_formula", "Transform1.Date", "Transform1.Date_formula_RealData", "Transform1.Date_formula_RealData_formula", "Transform1.Emp_No", "Date_formula" ]
+        }
+      }
+    },
+    "FORMULA4" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "DATE_ONLY",
+          "name" : "Date_formula_formula1",
+          "label" : "Date",
+          "formulaExpression" : "to_date(Date_formula)",
+          "format" : "dd/MM/yyyy",
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "REPLACE1" : {
+      "action" : "formula",
+      "sources" : [ "DROP_FIELDS0" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Transform1.Attendance_replace",
+          "newProperties" : {
+            "name" : "Transform1.Attendance"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Transform1.Attendance" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Transform1.Attendance_replace",
+          "label" : "Attendance",
+          "formulaExpression" : "replace(\"Transform1.Attendance\", 'Y', 'Attended')",
+          "precision" : 255
+        } ]
+      }
+    },
+    "REPLACE2" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Transform1.Attendance_replace",
+          "newProperties" : {
+            "name" : "Transform1.Attendance"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Transform1.Attendance" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Transform1.Attendance_replace",
+          "label" : "Attendance",
+          "formulaExpression" : "replace(\"Transform1.Attendance\", 'N', 'Not Attended')",
+          "precision" : 255
+        } ]
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "REPLACE2" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Data_Emp_Test_Amitesh",
+          "name" : "Data_Emp_Test_Amitesh"
+        }
+      }
+    },
+    "LOAD_DATASET2" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Emp_Name", "Emp_No" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "POC for New Hire.xlsx - Emp Data",
+          "name" : "POC_for_New_Hire_xlsx_Emp_Data"
+        }
+      }
+    },
+    "LOAD_DATASET3" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Attendance", "Emp_No", "Date" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "POC for New Hire.xlsx - Attendance Data",
+          "name" : "POC_for_New_Hire_xlsx_Attendance_Data"
+        }
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "TRANSFORM0" : {
+        "label" : "Transform 0",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 252,
+        "graph" : {
+          "FORMULA0" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ ]
+      },
+      "AGGREGATE0" : {
+        "label" : "Aggregate 0",
+        "type" : "AGGREGATE",
+        "top" : 112,
+        "left" : 392,
+        "graph" : {
+          "EXTRACT0" : null,
+          "AGGREGATE1" : null
+        },
+        "connectors" : [ {
+          "source" : "EXTRACT0",
+          "target" : "AGGREGATE1"
+        } ]
+      },
+      "JOIN0" : {
+        "label" : "Join 0",
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 532
+      },
+      "TRANSFORM1" : {
+        "label" : "Transform 1",
+        "type" : "TRANSFORM",
+        "top" : 392.4,
+        "left" : 252,
+        "graph" : {
+          "FORMULA1" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA2" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA1",
+          "target" : "FORMULA2"
+        } ]
+      },
+      "TRANSFORM2" : {
+        "label" : "Transform 2",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 672,
+        "graph" : {
+          "FORMULA3" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ ]
+      },
+      "JOIN1" : {
+        "label" : "Join 1",
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 812
+      },
+      "TRANSFORM3" : {
+        "label" : "Transform 3",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 952,
+        "graph" : {
+          "REPLACE0" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "DROP_FIELDS0" : null,
+          "FORMULA4" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "REPLACE1" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE2" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA4",
+          "target" : "DROP_FIELDS0"
+        }, {
+          "source" : "REPLACE0",
+          "target" : "FORMULA4"
+        }, {
+          "source" : "DROP_FIELDS0",
+          "target" : "REPLACE1"
+        }, {
+          "source" : "REPLACE1",
+          "target" : "REPLACE2"
+        } ]
+      },
+      "OUTPUT0" : {
+        "label" : "Output 0",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 1092
+      },
+      "LOAD_DATASET2" : {
+        "label" : "POC for New Hire.xlsx - Emp Data",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "LOAD_DATASET3" : {
+        "label" : "POC for New Hire.xlsx - Attendance Data",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      }
+    },
+    "connectors" : [ {
+      "source" : "TRANSFORM0",
+      "target" : "AGGREGATE0"
+    }, {
+      "source" : "AGGREGATE0",
+      "target" : "JOIN0"
+    }, {
+      "source" : "JOIN0",
+      "target" : "TRANSFORM2"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "JOIN1"
+    }, {
+      "source" : "TRANSFORM1",
+      "target" : "JOIN1"
+    }, {
+      "source" : "JOIN1",
+      "target" : "TRANSFORM3"
+    }, {
+      "source" : "TRANSFORM3",
+      "target" : "OUTPUT0"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "TRANSFORM1"
+    }, {
+      "source" : "LOAD_DATASET2",
+      "target" : "JOIN0"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}

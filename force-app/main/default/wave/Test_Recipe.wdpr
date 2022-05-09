@@ -1,0 +1,95 @@
+{
+  "version" : "52.0",
+  "nodes" : {
+    "LOAD_DATASET0" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "AccountId", "Name", "Type", "ForecastCategory", "LeadSource" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Opportunity",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Opportunity"
+        }
+      }
+    },
+    "LOAD_DATASET1" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Name", "Type", "BillingCountry", "ShippingStreet", "ShippingCountry", "Phone", "AccountNumber", "AnnualRevenue", "BillingState", "Industry" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Account",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Account"
+        }
+      }
+    },
+    "JOIN0" : {
+      "action" : "join",
+      "sources" : [ "LOAD_DATASET0", "LOAD_DATASET1" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "AccountId" ],
+        "rightQualifier" : "Accounts",
+        "rightKeys" : [ "Id" ]
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "label" : "Opportunity",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "LOAD_DATASET1" : {
+        "label" : "Account",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN0" : {
+        "label" : "Join",
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 252
+      },
+      "TRANSFORM0" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 392,
+        "graph" : { },
+        "connectors" : [ ]
+      }
+    },
+    "connectors" : [ {
+      "source" : "LOAD_DATASET0",
+      "target" : "JOIN0"
+    }, {
+      "source" : "LOAD_DATASET1",
+      "target" : "JOIN0"
+    }, {
+      "source" : "JOIN0",
+      "target" : "TRANSFORM0"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}

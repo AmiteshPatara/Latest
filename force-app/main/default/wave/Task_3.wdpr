@@ -1,0 +1,69 @@
+{
+  "version" : "53.0",
+  "nodes" : {
+    "LOAD_DATASET0" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Fiscal_Quarter", "Fiscal_Year", "Account_Name", "Fiscal_Month", "Start_Date" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Problem Statement 3 Data (Fiscal Year_Quarter) - Sheet1",
+          "name" : "Copy_of_Problem_Statement_3_Data_Fiscal_Year_Quarter_Sheet1"
+        }
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "LOAD_DATASET0" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 3_Test",
+          "name" : "Task_3_Test",
+          "folderName" : "SharedApp"
+        }
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "label" : "Problem Statement 3 Data (Fiscal Year_Quarter) - Sheet1",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET0" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM0" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 252,
+        "graph" : { },
+        "connectors" : [ ]
+      },
+      "OUTPUT0" : {
+        "label" : "Output",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 392
+      }
+    },
+    "connectors" : [ {
+      "source" : "LOAD_DATASET0",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "OUTPUT0"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}

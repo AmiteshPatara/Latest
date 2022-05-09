@@ -1,0 +1,300 @@
+{
+  "version" : "54.0",
+  "nodes" : {
+    "LOAD_DATASET0" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Name", "Type", "AccountNumber", "AnnualRevenue", "NumberOfEmployees", "Site", "OwnerId", "AccountSource", "Industry" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Account",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Account"
+        }
+      }
+    },
+    "LOAD_DATASET1" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Embarked", "Ticket", "Sex", "Name", "Industry", "Cabin", "AccountSource", "Pclass", "Survived", "SibSp", "Fare", "Parch", "Age" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Copy of Titanic Dataset - titanic (2) (1)",
+          "name" : "Copy_of_Titanic_Dataset_titanic_2_1"
+        }
+      }
+    },
+    "JOIN0" : {
+      "action" : "join",
+      "sources" : [ "TO_MEASURE1", "TO_MEASURE0" ],
+      "schema" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "AccountSource" ],
+        "rightQualifier" : "Account",
+        "rightKeys" : [ "AccountSource" ]
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "FILTER3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Training Dataset",
+          "name" : "Training_Dataset",
+          "folderName" : "Titanic_App"
+        }
+      }
+    },
+    "FILTER1" : {
+      "action" : "filter",
+      "sources" : [ "JOIN0" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "Account.Industry",
+          "operator" : "EQUAL",
+          "operands" : [ "Titanic" ]
+        } ]
+      }
+    },
+    "OUTPUT1" : {
+      "action" : "save",
+      "sources" : [ "FILTER2" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Scoring Dataset",
+          "name" : "Scoring_Dataset",
+          "folderName" : "Titanic_App"
+        }
+      }
+    },
+    "FILTER2" : {
+      "action" : "filter",
+      "sources" : [ "FILTER1" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "AccountSource",
+          "operator" : "GREATER_THAN",
+          "operands" : [ "800" ]
+        } ]
+      }
+    },
+    "FILTER3" : {
+      "action" : "filter",
+      "sources" : [ "FILTER1" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "AccountSource",
+          "operator" : "LESS_OR_EQUAL",
+          "operands" : [ "800" ]
+        } ]
+      }
+    },
+    "FILTER4" : {
+      "action" : "filter",
+      "sources" : [ "LOAD_DATASET0" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "AccountSource",
+          "operator" : "IS_NOT_NULL",
+          "operands" : [ ]
+        } ]
+      }
+    },
+    "TO_MEASURE0" : {
+      "action" : "typeCast",
+      "sources" : [ "FILTER4" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "AccountSource_to_measure",
+          "newProperties" : {
+            "name" : "AccountSource"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "AccountSource" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "AccountSource",
+          "newProperties" : {
+            "label" : "Account Source",
+            "name" : "AccountSource_to_measure",
+            "typeProperties" : {
+              "type" : "NUMBER",
+              "scale" : 0,
+              "precision" : 18
+            }
+          }
+        } ]
+      }
+    },
+    "TO_MEASURE1" : {
+      "action" : "typeCast",
+      "sources" : [ "LOAD_DATASET1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "AccountSource_to_measure",
+          "newProperties" : {
+            "name" : "AccountSource"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "AccountSource" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "AccountSource",
+          "newProperties" : {
+            "label" : "AccountSource",
+            "name" : "AccountSource_to_measure",
+            "typeProperties" : {
+              "type" : "NUMBER",
+              "scale" : 0,
+              "precision" : 18
+            }
+          }
+        } ]
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "label" : "Account",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "LOAD_DATASET1" : {
+        "label" : "Copy of Titanic Dataset - titanic (2) (1)",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 112,
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN0" : {
+        "label" : "Join 0",
+        "type" : "JOIN",
+        "top" : 532,
+        "left" : 112.4
+      },
+      "OUTPUT0" : {
+        "label" : "Output 0",
+        "type" : "OUTPUT",
+        "top" : 252,
+        "left" : 672.2
+      },
+      "FILTER1" : {
+        "label" : "Filter 1",
+        "type" : "FILTER",
+        "top" : 252,
+        "left" : 392
+      },
+      "OUTPUT1" : {
+        "label" : "Output 1",
+        "type" : "OUTPUT",
+        "top" : 392.1,
+        "left" : 672.2
+      },
+      "FILTER2" : {
+        "label" : "Filter 2",
+        "type" : "FILTER",
+        "top" : 392.1,
+        "left" : 392.1
+      },
+      "FILTER3" : {
+        "label" : "Filter 3",
+        "type" : "FILTER",
+        "top" : 252,
+        "left" : 532
+      },
+      "FILTER4" : {
+        "label" : "Filter 4",
+        "type" : "FILTER",
+        "top" : 112,
+        "left" : 252
+      },
+      "TRANSFORM0" : {
+        "label" : "Transform 0",
+        "type" : "TRANSFORM",
+        "top" : 252,
+        "left" : 252,
+        "graph" : {
+          "TO_MEASURE0" : null
+        },
+        "connectors" : [ ]
+      },
+      "TRANSFORM1" : {
+        "label" : "Transform 1",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 112,
+        "graph" : {
+          "TO_MEASURE1" : null
+        },
+        "connectors" : [ ]
+      }
+    },
+    "connectors" : [ {
+      "source" : "TRANSFORM1",
+      "target" : "JOIN0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "JOIN0"
+    }, {
+      "source" : "JOIN0",
+      "target" : "FILTER1"
+    }, {
+      "source" : "FILTER3",
+      "target" : "OUTPUT0"
+    }, {
+      "source" : "FILTER2",
+      "target" : "OUTPUT1"
+    }, {
+      "source" : "FILTER1",
+      "target" : "FILTER2"
+    }, {
+      "source" : "FILTER1",
+      "target" : "FILTER3"
+    }, {
+      "source" : "LOAD_DATASET0",
+      "target" : "FILTER4"
+    }, {
+      "source" : "FILTER4",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "LOAD_DATASET1",
+      "target" : "TRANSFORM1"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}

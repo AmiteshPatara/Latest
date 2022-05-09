@@ -1,0 +1,335 @@
+{
+  "name" : "Titanic_Survived",
+  "label" : "Titanic Survived",
+  "scheduleExpression" : null,
+  "publishingTarget" : "DATASET",
+  "format" : "R3",
+  "scheduleType" : null,
+  "recipeDefinition" : {
+    "version" : "54.0",
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "action" : "load",
+        "sources" : [ ],
+        "parameters" : {
+          "fields" : [
+            "Id",
+            "Name",
+            "Industry",
+            "AccountSource"
+          ],
+          "dataset" : {
+            "type" : "connectedDataset",
+            "label" : "Account",
+            "connectionName" : "SFDC_LOCAL",
+            "sourceObjectName" : "Account"
+          }
+        }
+      },
+      "LOAD_DATASET1" : {
+        "action" : "load",
+        "sources" : [ ],
+        "parameters" : {
+          "fields" : [
+            "Embarked",
+            "Ticket",
+            "Sex",
+            "Name",
+            "Industry",
+            "Cabin",
+            "Pclass",
+            "Survived",
+            "SibSp",
+            "Fare",
+            "Parch",
+            "AccountSource",
+            "Age"
+          ],
+          "dataset" : {
+            "type" : "analyticsDataset",
+            "label" : "Titanic Dataset",
+            "name" : "${Variables.TitanicDataset.datasetAlias}"
+          }
+        }
+      },
+      "TO_MEASURE0" : {
+        "action" : "typeCast",
+        "sources" : [
+          "FILTER3"
+        ],
+        "schema" : {
+          "fields" : [
+            {
+              "name" : "AccountSource_to_measure",
+              "newProperties" : {
+                "name" : "AccountSource"
+              }
+            }
+          ],
+          "slice" : {
+            "mode" : "DROP",
+            "ignoreMissingFields" : true,
+            "fields" : [
+              "AccountSource"
+            ]
+          }
+        },
+        "parameters" : {
+          "fields" : [
+            {
+              "name" : "AccountSource",
+              "newProperties" : {
+                "label" : "Account Source",
+                "name" : "AccountSource_to_measure",
+                "typeProperties" : {
+                  "type" : "NUMBER",
+                  "scale" : 0,
+                  "precision" : 18
+                }
+              }
+            }
+          ]
+        }
+      },
+      "JOIN0" : {
+        "action" : "join",
+        "sources" : [
+          "TO_MEASURE0",
+          "LOAD_DATASET1"
+        ],
+        "schema" : {
+          "fields" : [ ],
+          "slice" : {
+            "mode" : "DROP",
+            "ignoreMissingFields" : true,
+            "fields" : [ ]
+          }
+        },
+        "parameters" : {
+          "joinType" : "LOOKUP",
+          "leftKeys" : [
+            "AccountSource"
+          ],
+          "rightQualifier" : "TitanicDat",
+          "rightKeys" : [
+            "AccountSource"
+          ]
+        }
+      },
+      "FILTER0" : {
+        "action" : "filter",
+        "sources" : [
+          "JOIN0"
+        ],
+        "parameters" : {
+          "filterExpressions" : [
+            {
+              "type" : "TEXT",
+              "field" : "Industry",
+              "operator" : "EQUAL",
+              "operands" : [
+                "Titanic"
+              ]
+            }
+          ]
+        }
+      },
+      "OUTPUT0" : {
+        "action" : "save",
+        "sources" : [
+          "FILTER1"
+        ],
+        "parameters" : {
+          "fields" : [ ],
+          "dataset" : {
+            "type" : "analyticsDataset",
+            "label" : "Titanic Training Dataset",
+            "name" : "${App.Datasets.Titanic_Training_Dataset_tp.FullyQualifiedName}",
+            "folderName" : "${App.Folder.FullyQualifiedName}"
+          }
+        }
+      },
+      "FILTER1" : {
+        "action" : "filter",
+        "sources" : [
+          "FILTER0"
+        ],
+        "parameters" : {
+          "filterExpressions" : [
+            {
+              "type" : "NUMBER",
+              "field" : "AccountSource",
+              "operator" : "LESS_OR_EQUAL",
+              "operands" : [
+                "800"
+              ]
+            }
+          ]
+        }
+      },
+      "FILTER2" : {
+        "action" : "filter",
+        "sources" : [
+          "FILTER0"
+        ],
+        "parameters" : {
+          "filterExpressions" : [
+            {
+              "type" : "NUMBER",
+              "field" : "AccountSource",
+              "operator" : "GREATER_THAN",
+              "operands" : [
+                "800"
+              ]
+            }
+          ]
+        }
+      },
+      "OUTPUT1" : {
+        "action" : "save",
+        "sources" : [
+          "FILTER2"
+        ],
+        "parameters" : {
+          "fields" : [ ],
+          "dataset" : {
+            "type" : "analyticsDataset",
+            "label" : "Titanic Scoring Dataset",
+            "name" : "${App.Datasets.Titanic_Scoring_Dataset_tp.FullyQualifiedName}",
+            "folderName" : "${App.Folder.FullyQualifiedName}"
+          }
+        }
+      },
+      "FILTER3" : {
+        "action" : "filter",
+        "sources" : [
+          "LOAD_DATASET0"
+        ],
+        "parameters" : {
+          "filterExpressions" : [
+            {
+              "type" : "TEXT",
+              "field" : "AccountSource",
+              "operator" : "IS_NOT_NULL",
+              "operands" : [ ]
+            }
+          ]
+        }
+      }
+    },
+    "ui" : {
+      "nodes" : {
+        "LOAD_DATASET0" : {
+          "label" : "Account",
+          "type" : "LOAD_DATASET",
+          "top" : 112,
+          "left" : 112,
+          "parameters" : {
+            "sampleSize" : 2000
+          }
+        },
+        "LOAD_DATASET1" : {
+          "label" : "Titanic Dataset",
+          "type" : "LOAD_DATASET",
+          "top" : 252,
+          "left" : 112,
+          "parameters" : {
+            "sampleSize" : 2000
+          }
+        },
+        "TRANSFORM0" : {
+          "label" : "Transform 0",
+          "type" : "TRANSFORM",
+          "top" : 112,
+          "left" : 392,
+          "graph" : {
+            "TO_MEASURE0" : null
+          },
+          "connectors" : [ ]
+        },
+        "JOIN0" : {
+          "label" : "Join 0",
+          "type" : "JOIN",
+          "top" : 112,
+          "left" : 532
+        },
+        "FILTER0" : {
+          "label" : "Filter 0",
+          "type" : "FILTER",
+          "top" : 112,
+          "left" : 672
+        },
+        "OUTPUT0" : {
+          "label" : "Output 0",
+          "type" : "OUTPUT",
+          "top" : 111.9,
+          "left" : 951.3
+        },
+        "FILTER1" : {
+          "label" : "Filter 1",
+          "type" : "FILTER",
+          "top" : 112.19999999999999,
+          "left" : 811.2
+        },
+        "FILTER2" : {
+          "label" : "Filter 2",
+          "type" : "FILTER",
+          "top" : 251.89999999999998,
+          "left" : 812.2
+        },
+        "OUTPUT1" : {
+          "label" : "Output 1",
+          "type" : "OUTPUT",
+          "top" : 252,
+          "left" : 952
+        },
+        "FILTER3" : {
+          "label" : "Filter 3",
+          "type" : "FILTER",
+          "top" : 112,
+          "left" : 252
+        }
+      },
+      "connectors" : [
+        {
+          "source" : "FILTER3",
+          "target" : "TRANSFORM0"
+        },
+        {
+          "source" : "TRANSFORM0",
+          "target" : "JOIN0"
+        },
+        {
+          "source" : "LOAD_DATASET1",
+          "target" : "JOIN0"
+        },
+        {
+          "source" : "JOIN0",
+          "target" : "FILTER0"
+        },
+        {
+          "source" : "FILTER1",
+          "target" : "OUTPUT0"
+        },
+        {
+          "source" : "FILTER0",
+          "target" : "FILTER1"
+        },
+        {
+          "source" : "FILTER0",
+          "target" : "FILTER2"
+        },
+        {
+          "source" : "FILTER2",
+          "target" : "OUTPUT1"
+        },
+        {
+          "source" : "LOAD_DATASET0",
+          "target" : "FILTER3"
+        }
+      ],
+      "hiddenColumns" : [ ]
+    }
+  },
+  "status" : "Success"
+}

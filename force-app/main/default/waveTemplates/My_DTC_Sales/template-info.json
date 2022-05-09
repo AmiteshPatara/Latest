@@ -1,0 +1,120 @@
+{
+  "templateType" : "app",
+  "label" : "A template created in VS",
+  "name" : "My_DTC_Sales",
+  "assetVersion" : 54.0,
+  "variableDefinition" : "variables.json",
+  "uiDefinition" : "ui.json",
+  "rules" : [
+    {
+      "type" : "templateToApp",
+      "file" : "template-to-app-rules.json"
+    },
+    {
+      "type" : "appToTemplate",
+      "file" : "app-to-template-rules.json"
+    }
+  ],
+  "releaseInfo" : {
+    "templateVersion" : "1.1",
+    "notesFile" : "releaseNotes.html"
+  },
+  "folderDefinition" : "folder.json",
+  "externalFiles" : [ ],
+  "lenses" : [ ],
+  "dashboards" : [
+    {
+      "label" : "DTC Sales",
+      "name" : "DTC_Sales_SAMPLE_tp",
+      "condition" : "${Variables.Overrides.createAllDashboards}",
+      "file" : "dashboards/DTC_Sales_SAMPLE.json"
+    },
+    {
+      "label" : "Opportunity Details",
+      "name" : "Opportunity_Details_tp",
+      "condition" : "${Variables.Overrides.createAllDashboards}",
+      "file" : "dashboards/Opportunity_Details.json"
+    },
+    {
+      "label" : "Regional Sales",
+      "name" : "Regional_Sales_SAMPLE_tp",
+      "condition" : "${Variables.Overrides.createAllDashboards}",
+      "file" : "dashboards/Regional_Sales_SAMPLE.json"
+    },
+    {
+      "label" : "Sales Performance with Selectable Measures",
+      "name" : "Sales_Performance_with_Selectable_Measures_Trailhead_tp",
+      "condition" : "${Variables.Overrides.createAllDashboards}",
+      "file" : "dashboards/Sales_Performance_with_Selectable_Measures_Trailhead.json"
+    }
+  ],
+  "components" : [ ],
+  "eltDataflows" : [ ],
+  "recipes" : [ ],
+  "datasetFiles" : [
+    {
+      "label" : "DTC Opportunity",
+      "name" : "DTC_Opportunity_SAMPLE_tp",
+      "condition" : "${Variables.Overrides.createAllDatasetFiles}",
+      "userXmd" : "dataset_files/DTC_Opportunity_SAMPLE_XMD.json"
+    }
+  ],
+  "storedQueries" : [ ],
+  "imageFiles" : [
+    {
+      "name" : "LayingOutjpg",
+      "condition" : "${Variables.Overrides.createAllImages}",
+      "file" : "images/LayingOut.jpg"
+    },
+    {
+      "name" : "Trailheadpng1",
+      "condition" : "${Variables.Overrides.createAllImages}",
+      "file" : "images/Trailhead.png"
+    }
+  ],
+  "extendedTypes" : { },
+  "templateDependencies" : [ ],
+  "customAttributes" : [
+    {
+      "label" : "Features",
+      "values" : [
+        "Dataflow",
+        "Prebuilt Dashboards"
+      ]
+    },
+    {
+      "label" : "Salesforce Objects",
+      "values" : [
+        "Standard Objects",
+        "Custom Objects"
+      ]
+    },
+    {
+      "label" : "Publisher",
+      "values" : [
+        "ISV ABC"
+      ]
+    }
+  ],
+  "tags" : [
+    "Trending",
+    "Manager",
+    "Operations",
+    "Executive"
+  ],
+  "icons" : {
+    "appBadge" : {
+      "name" : "3.png"
+    },
+    "templateBadge" : {
+      "name" : "default.png"
+    },
+    "templatePreviews" : [
+      {
+        "name" : "tablegridexpansion",
+        "label" : "Table Grid Expansion Analytics",
+        "description" : "Create an app using the Table Grid Exoansion Analytics template with an Expandable/Collapsible raw data table showing ID column, all dimensions, and all metrics"
+      }
+    ]
+  }
+}

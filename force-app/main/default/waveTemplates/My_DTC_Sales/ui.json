@@ -1,0 +1,13 @@
+{
+  "pages": [
+    {
+    "title": "Choose a title for your dashboard.",
+    "variables": [     
+      {
+        "name": "DashboardTitle"
+      }
+    ] 
+  }
+],
+  "displayMessages": []
+}

@@ -8,11 +8,11 @@
 	</types>
 	<types>
 		<members>*</members>
-		<name>WaveTemplateBundle</name>
+		<name>WaveRecipe</name>
 	</types>
 	<types>
 		<members>*</members>
-		<name>WaveRecipe</name>
+		<name>WaveTemplateBundle</name>
 	</types>
 	<version>53.0</version>
 </Package>

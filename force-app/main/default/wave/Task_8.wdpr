@@ -1,0 +1,474 @@
+{
+  "version" : "53.0",
+  "nodes" : {
+    "LOAD_DATASET10" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Sales_Rep", "Q1_Revenue", "Q4_Revenue", "Q3_Revenue", "Q2_Revenue" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "RecipeKata #8 - Sheet1",
+          "name" : "RecipeKata_8_Sheet1"
+        }
+      }
+    },
+    "FORMULA26" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q1'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS3" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA26" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q4_Revenue", "Q3_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES14" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS3" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q1_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q1_Revenue"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES17" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES14" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Sales_Rep_formula",
+          "newProperties" : {
+            "label" : "Quarter",
+            "name" : "Quarter_Q1",
+            "typeProperties" : null
+          }
+        } ]
+      }
+    },
+    "FORMULA29" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q4'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS6" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA29" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q3_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES16" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS6" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q4_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q4_Revenue"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES20" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES16" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Sales_Rep_formula",
+          "newProperties" : {
+            "label" : "Quarter",
+            "name" : "Quarter_Q4",
+            "typeProperties" : null
+          }
+        } ]
+      }
+    },
+    "FORMULA27" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q2'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS4" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA27" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q3_Revenue", "Q4_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES13" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS4" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q2_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Revenue"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES18" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES13" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Sales_Rep_formula",
+          "newProperties" : {
+            "label" : "Quarter",
+            "name" : "Quarter_Q2",
+            "typeProperties" : null
+          }
+        } ]
+      }
+    },
+    "FORMULA28" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q3'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS5" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA28" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q4_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES15" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS5" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q3_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q3_Revenue"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES19" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES15" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Sales_Rep_formula",
+          "newProperties" : {
+            "label" : "Quarter",
+            "name" : "Quarter_Q3",
+            "typeProperties" : null
+          }
+        } ]
+      }
+    },
+    "APPEND1" : {
+      "action" : "appendV2",
+      "sources" : [ "EDIT_ATTRIBUTES17", "EDIT_ATTRIBUTES18" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q1_Revenue",
+          "bottom" : "Revenue"
+        }, {
+          "top" : "Quarter_Q1",
+          "bottom" : "Quarter_Q2"
+        } ]
+      }
+    },
+    "APPEND2" : {
+      "action" : "appendV2",
+      "sources" : [ "EDIT_ATTRIBUTES19", "EDIT_ATTRIBUTES20" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q3_Revenue",
+          "bottom" : "Q4_Revenue"
+        }, {
+          "top" : "Quarter_Q3",
+          "bottom" : "Quarter_Q4"
+        } ]
+      }
+    },
+    "APPEND3" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND1", "APPEND2" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q1_Revenue",
+          "bottom" : "Q3_Revenue"
+        }, {
+          "top" : "Quarter_Q1",
+          "bottom" : "Quarter_Q3"
+        } ]
+      }
+    },
+    "OUTPUT8" : {
+      "action" : "save",
+      "sources" : [ "APPEND3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 8",
+          "name" : "Task_8",
+          "folderName" : "SharedApp"
+        }
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET10" : {
+        "label" : "RecipeKata #8 - Sheet1",
+        "type" : "LOAD_DATASET",
+        "top" : 672,
+        "left" : 1232.3,
+        "graph" : {
+          "LOAD_DATASET10" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM14" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 672,
+        "left" : 1512,
+        "graph" : {
+          "FORMULA26" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS3" : null,
+          "EDIT_ATTRIBUTES14" : null,
+          "EDIT_ATTRIBUTES17" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA26",
+          "target" : "DROP_FIELDS3"
+        }, {
+          "source" : "DROP_FIELDS3",
+          "target" : "EDIT_ATTRIBUTES14"
+        }, {
+          "source" : "EDIT_ATTRIBUTES14",
+          "target" : "EDIT_ATTRIBUTES17"
+        } ]
+      },
+      "TRANSFORM15" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 1092.1,
+        "left" : 1512.3,
+        "graph" : {
+          "FORMULA29" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS6" : null,
+          "EDIT_ATTRIBUTES16" : null,
+          "EDIT_ATTRIBUTES20" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA29",
+          "target" : "DROP_FIELDS6"
+        }, {
+          "source" : "DROP_FIELDS6",
+          "target" : "EDIT_ATTRIBUTES16"
+        }, {
+          "source" : "EDIT_ATTRIBUTES16",
+          "target" : "EDIT_ATTRIBUTES20"
+        } ]
+      },
+      "TRANSFORM17" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 812,
+        "left" : 1513.2,
+        "graph" : {
+          "FORMULA27" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS4" : null,
+          "EDIT_ATTRIBUTES13" : null,
+          "EDIT_ATTRIBUTES18" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA27",
+          "target" : "DROP_FIELDS4"
+        }, {
+          "source" : "DROP_FIELDS4",
+          "target" : "EDIT_ATTRIBUTES13"
+        }, {
+          "source" : "EDIT_ATTRIBUTES13",
+          "target" : "EDIT_ATTRIBUTES18"
+        } ]
+      },
+      "TRANSFORM18" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 952.2,
+        "left" : 1512.1,
+        "graph" : {
+          "FORMULA28" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS5" : null,
+          "EDIT_ATTRIBUTES15" : null,
+          "EDIT_ATTRIBUTES19" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA28",
+          "target" : "DROP_FIELDS5"
+        }, {
+          "source" : "DROP_FIELDS5",
+          "target" : "EDIT_ATTRIBUTES15"
+        }, {
+          "source" : "EDIT_ATTRIBUTES15",
+          "target" : "EDIT_ATTRIBUTES19"
+        } ]
+      },
+      "APPEND1" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 672,
+        "left" : 1652
+      },
+      "APPEND2" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 952,
+        "left" : 1652
+      },
+      "APPEND3" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 672,
+        "left" : 1792
+      },
+      "OUTPUT8" : {
+        "label" : "Output",
+        "type" : "OUTPUT",
+        "top" : 532.3,
+        "left" : 811.9
+      }
+    },
+    "connectors" : [ {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM14"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM17"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM18"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM15"
+    }, {
+      "source" : "TRANSFORM14",
+      "target" : "APPEND1"
+    }, {
+      "source" : "TRANSFORM17",
+      "target" : "APPEND1"
+    }, {
+      "source" : "TRANSFORM18",
+      "target" : "APPEND2"
+    }, {
+      "source" : "TRANSFORM15",
+      "target" : "APPEND2"
+    }, {
+      "source" : "APPEND1",
+      "target" : "APPEND3"
+    }, {
+      "source" : "APPEND2",
+      "target" : "APPEND3"
+    }, {
+      "source" : "APPEND3",
+      "target" : "OUTPUT8"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}

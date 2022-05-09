@@ -1,0 +1,3146 @@
+{
+  "version" : "53.0",
+  "nodes" : {
+    "LOAD_DATASET0" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Name", "StageName", "Amount", "CloseDate", "IsClosed", "CreatedDate" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Opportunity",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Opportunity"
+        }
+      }
+    },
+    "FORMULA3" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "DATETIME",
+          "name" : "CloseDate_formula",
+          "label" : "Today",
+          "formulaExpression" : "now()",
+          "format" : "yyyy-MM-dd",
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES0" : {
+      "action" : "schema",
+      "sources" : [ "LOAD_DATASET0" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate",
+          "newProperties" : {
+            "label" : "Created Date",
+            "name" : "CreatedDate",
+            "typeProperties" : {
+              "type" : "DATETIME",
+              "format" : "yyyy-MM-dd"
+            }
+          }
+        } ]
+      }
+    },
+    "FORMULA4" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "DATETIME",
+          "name" : "CreatedDate_formula2",
+          "label" : "Close Date Derived",
+          "formulaExpression" : "case \r\n\twhen IsClosed = 'true'\r\n\tthen CloseDate\r\n\telse\r\n\tToday\r\nend",
+          "format" : "yyyy-MM-dd",
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA5" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Id_formula1",
+          "label" : "Day of Week - Created Date",
+          "formulaExpression" : "dayofweek(CreatedDate)",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA6" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES8" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula1_formula",
+          "label" : "Week Day- Created Day",
+          "formulaExpression" : "\r\ncase Created_Date_Day\r\n\twhen 1\r\n\tthen 'Sunday' \r\n\twhen 2\r\n\tthen 'Monday' \r\n\twhen 3\r\n\tthen 'Tuesday' \r\n\twhen 4\r\n\tthen 'Wednesday' \r\n\twhen 5\r\n\tthen 'Thursday' \r\n\twhen 6\r\n\tthen 'Friday' \r\n\twhen 7\r\n\tthen 'Saturday' \r\n\telse\r\n0\r\nend",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA7" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES2" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "CreatedDate_formula3",
+          "label" : "Total Days",
+          "formulaExpression" : "datediff(End_Date, CreatedDate)",
+          "precision" : 18,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA8" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES4" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "CreatedDate_formula2_formula",
+          "label" : "Day of Week - Closed Date",
+          "formulaExpression" : "dayofweek(End_Date)",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA9" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES5" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "CreatedDate_formula2_formula_formula",
+          "label" : "Total Days + 1",
+          "formulaExpression" : "Total_Days + 1  ",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA10" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES6" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "CreatedDate_formula2_formula_formula_formula",
+          "label" : "Business Days",
+          "formulaExpression" : "(floor(Total_Days_Plus_One/7)*5)",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA11" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES7" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "CreatedDate_formula2_formula_formula_formula1",
+          "label" : "Extra Days",
+          "formulaExpression" : "(Total_Days % 7)",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES1" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA3" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CloseDate_formula",
+          "newProperties" : {
+            "label" : "Today",
+            "name" : "Today"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES2" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA4" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula2",
+          "newProperties" : {
+            "label" : "End Date",
+            "name" : "End_Date"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES3" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA7" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula3",
+          "newProperties" : {
+            "label" : "Total Days",
+            "name" : "Total_Days"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES4" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA5" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Id_formula1",
+          "newProperties" : {
+            "label" : "Day of Week - Created Date",
+            "name" : "Created_Date_Day"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES5" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA8" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula2_formula",
+          "newProperties" : {
+            "label" : "Day of Week - Closed Date",
+            "name" : "End_Date_Day_c"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES6" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA9" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula2_formula_formula",
+          "newProperties" : {
+            "label" : "Total Days + 1",
+            "name" : "Total_Days_Plus_One"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES7" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA10" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula2_formula_formula_formula",
+          "newProperties" : {
+            "label" : "Business Days Formula",
+            "name" : "Business_Days_Formula"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES8" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA11" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "CreatedDate_formula2_formula_formula_formula1",
+          "newProperties" : {
+            "label" : "Extra Days",
+            "name" : "Extra_Days_Remainder"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES9" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA6" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Id_formula1_formula",
+          "newProperties" : {
+            "label" : "Week Day Name- Created Day",
+            "name" : "Created_Date_Day_Name"
+          }
+        } ]
+      }
+    },
+    "FORMULA12" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES9" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Extra_Days_Remainder_formula",
+          "label" : "Extra Days Formula",
+          "formulaExpression" : "(Extra_Days_Remainder -\r\ncase\r\n    when (End_Date_Day_c = 7 and Created_Date_Day = 1) OR (Created_Date_Day - End_Date_Day_c = 1) then 0\r\n    when End_Date_Day_c<Created_Date_Day then 2\r\n    when Created_Date_Day> 1 and Extra_Days_Remainder + Created_Date_Day < 8 then 0\r\n    else 1\r\nend ) + Business_Days_Formula\r\n    ",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES10" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA12" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Extra_Days_Remainder_formula",
+          "newProperties" : {
+            "label" : "Total Business Days",
+            "name" : "Business_Days"
+          }
+        } ]
+      }
+    },
+    "OUTPUT0" : {
+      "action" : "save",
+      "sources" : [ "EDIT_ATTRIBUTES10" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task",
+          "name" : "Task",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "LOAD_DATASET1" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Username", "LastName", "FirstName", "Name", "IsActive", "UserRoleId", "UserType", "True_Checkbox__c", "True_String__c", "True_Picklist__c" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "User",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "User"
+        }
+      }
+    },
+    "LOAD_DATASET2" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "Name", "ParentRoleId" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "UserRole",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "UserRole"
+        }
+      }
+    },
+    "JOIN0" : {
+      "action" : "join",
+      "sources" : [ "LOAD_DATASET1", "FLATTEN0" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "UserRoleId" ],
+        "rightQualifier" : "UserRole",
+        "rightKeys" : [ "Id" ]
+      }
+    },
+    "OUTPUT1" : {
+      "action" : "save",
+      "sources" : [ "FORMULA35" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 2",
+          "name" : "Task_2",
+          "rowLevelSecurityFilter" : "'Oppty.UserRole.Id_flatten_multiField' == \"$User.UserRoleId\" || 'OwnerId' == \"$User.Id\"",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "FLATTEN0" : {
+      "action" : "flatten",
+      "sources" : [ "LOAD_DATASET2" ],
+      "parameters" : {
+        "selfField" : "Id",
+        "parentField" : "ParentRoleId",
+        "multiField" : {
+          "name" : "Id_flatten_multiField",
+          "label" : "Parent Roles Mullti Value",
+          "isSystemField" : false
+        },
+        "pathField" : {
+          "name" : "Id_flatten",
+          "label" : "Parent Role Path",
+          "isSystemField" : false
+        },
+        "includeSelfId" : true
+      }
+    },
+    "LOAD_DATASET3" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Id", "AccountId", "Name", "StageName", "Amount", "CloseDate", "IsClosed", "OwnerId", "CreatedDate" ],
+        "dataset" : {
+          "type" : "connectedDataset",
+          "label" : "Opportunity",
+          "connectionName" : "SFDC_LOCAL",
+          "sourceObjectName" : "Opportunity"
+        }
+      }
+    },
+    "JOIN1" : {
+      "action" : "join",
+      "sources" : [ "LOAD_DATASET3", "JOIN0" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "OwnerId" ],
+        "rightQualifier" : "Oppty",
+        "rightKeys" : [ "Id" ]
+      }
+    },
+    "FORMULA30" : {
+      "action" : "formula",
+      "sources" : [ "JOIN1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula",
+          "label" : "True recipe",
+          "formulaExpression" : "'true'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES17" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA30" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Id_formula",
+          "newProperties" : {
+            "label" : "True Recipe",
+            "name" : "True_Recipe"
+          }
+        } ]
+      }
+    },
+    "FORMULA31" : {
+      "action" : "formula",
+      "sources" : [ "EDIT_ATTRIBUTES17" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula",
+          "label" : "Yes_Recipe",
+          "formulaExpression" : "'Yes'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA32" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA31" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula_formula",
+          "label" : "YES_Recipe",
+          "formulaExpression" : "'YES'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA33" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA32" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula_formula_formula",
+          "label" : "yes_Recipe",
+          "formulaExpression" : "'yes'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA34" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA33" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula_formula_formula_formula",
+          "label" : "Y Recipe",
+          "formulaExpression" : "'Y'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA35" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA34" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Id_formula_formula_formula_formula_formula",
+          "label" : "y Recipe",
+          "formulaExpression" : "'y'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "LOAD_DATASET4" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Fiscal_Quarter", "Fiscal_Year", "Account_Name", "Fiscal_Month", "Start_Date" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Problem Statement 3 Data (Fiscal Year_Quarter) - Sheet1",
+          "name" : "Copy_of_Problem_Statement_3_Data_Fiscal_Year_Quarter_Sheet1"
+        }
+      }
+    },
+    "SPLIT0" : {
+      "action" : "split",
+      "sources" : [ "LOAD_DATASET4" ],
+      "parameters" : {
+        "sourceField" : "Start_Date",
+        "delimiter" : "/",
+        "targetFields" : [ {
+          "name" : "Start_Date_split",
+          "label" : "Start Date Split YYYY"
+        }, {
+          "name" : "Start_Date_split1",
+          "label" : "Start Date Split MM/DD"
+        } ]
+      }
+    },
+    "SPLIT1" : {
+      "action" : "split",
+      "sources" : [ "SPLIT0" ],
+      "parameters" : {
+        "sourceField" : "Start_Date_split1",
+        "delimiter" : "/",
+        "targetFields" : [ {
+          "name" : "Start_Date_split1_split",
+          "label" : "Start Date Split MM"
+        }, {
+          "name" : "Start_Date_split1_split1",
+          "label" : "Start Date Split  DD"
+        } ]
+      }
+    },
+    "FORMULA13" : {
+      "action" : "formula",
+      "sources" : [ "SPLIT1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Start_Date_split_formula",
+          "label" : "Calander Start Date",
+          "formulaExpression" : "concat(Start_Date_split,'-',Start_Date_split1_split,'-', Start_Date_split1_split1)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "TO_DATE0" : {
+      "action" : "typeCast",
+      "sources" : [ "FORMULA13" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Start_Date_split_formula_to_date",
+          "newProperties" : {
+            "name" : "Start_Date_split_formula"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Start_Date_split_formula" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Start_Date_split_formula",
+          "newProperties" : {
+            "label" : "Calander Start Date",
+            "name" : "Start_Date_split_formula_to_date",
+            "typeProperties" : {
+              "type" : "DATETIME",
+              "format" : "yyyy-MM-dd"
+            }
+          }
+        } ]
+      }
+    },
+    "FORMULA14" : {
+      "action" : "formula",
+      "sources" : [ "TO_DATE0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Start_Date_split_formula_formula",
+          "label" : "Calander Quarter",
+          "formulaExpression" : "quarter(Start_Date_split_formula)",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA15" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA14" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Start_Date_split_formula_formula_formula",
+          "label" : "Calander Quarter_Bonus",
+          "formulaExpression" : "case when month(Start_Date_split_formula) =11 or month(Start_Date_split_formula) =12 or month(Start_Date_split_formula) =1 then '1' when month(Start_Date_split_formula) =2 or month(Start_Date_split_formula) =3 or month(Start_Date_split_formula) =4 then '3' \r\nwhen month(Start_Date_split_formula) =5 or month(Start_Date_split_formula) =6 or month(Start_Date_split_formula) =7 then '3' \r\nelse '4' end",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "TO_MEASURE0" : {
+      "action" : "typeCast",
+      "sources" : [ "FORMULA15" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Fiscal_Quarter_to_measure",
+          "newProperties" : {
+            "name" : "Fiscal_Quarter"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Fiscal_Quarter" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Fiscal_Quarter",
+          "newProperties" : {
+            "label" : "Fiscal Quarter",
+            "name" : "Fiscal_Quarter_to_measure",
+            "typeProperties" : {
+              "type" : "NUMBER",
+              "scale" : 0,
+              "precision" : 18
+            }
+          }
+        } ]
+      }
+    },
+    "OUTPUT2" : {
+      "action" : "save",
+      "sources" : [ "TO_MEASURE0" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task_3",
+          "name" : "Task_3",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "LOAD_DATASET5" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Accounts_Names", "Amount" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Problem Statement 4 data (Remove common Accounts) - West Accounts (1)",
+          "name" : "Problem_Statement_4_data_Remove_common_Accounts_West_Accounts_1"
+        }
+      }
+    },
+    "LOAD_DATASET6" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Accounts_Names", "Amount" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Problem Statement 4 data (Remove common Accounts) - East Accounts",
+          "name" : "Problem_Statement_4_data_Remove_common_Accounts_East_Accounts"
+        }
+      }
+    },
+    "APPEND0" : {
+      "action" : "appendV2",
+      "sources" : [ "LOAD_DATASET5", "LOAD_DATASET6" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Accounts_Names",
+          "bottom" : "Accounts_Names"
+        }, {
+          "top" : "Amount",
+          "bottom" : "Amount"
+        } ]
+      }
+    },
+    "FORMULA16" : {
+      "action" : "formula",
+      "sources" : [ "APPEND0" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Accounts_Names_formula",
+          "label" : "Accounts Names Formula",
+          "formulaExpression" : "case when \r\n(NOT(Accounts_Names like '%North%' or Accounts_Names like '%Nrth%'  or Accounts_Names like '%NORTH%')) then Accounts_Names else 'North Region'end",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "REPLACE1" : {
+      "action" : "formula",
+      "sources" : [ "FORMULA16" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Accounts_Names_replace",
+          "newProperties" : {
+            "name" : "Accounts_Names"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Accounts_Names" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Accounts_Names_replace",
+          "label" : "Accounts Names",
+          "formulaExpression" : "coalesce(Accounts_Names, null, 'Extra')"
+        } ]
+      }
+    },
+    "OUTPUT3" : {
+      "action" : "save",
+      "sources" : [ "DROP_FIELDS1" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task_4",
+          "name" : "Taksk_4",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "FILTER1" : {
+      "action" : "filter",
+      "sources" : [ "REPLACE1" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "Accounts_Names_formula",
+          "operator" : "NOT",
+          "operands" : [ "North Region" ]
+        }, {
+          "type" : "TEXT",
+          "field" : "Accounts_Names",
+          "operator" : "NOT",
+          "operands" : [ "Extra" ]
+        } ]
+      }
+    },
+    "OUTPUT4" : {
+      "action" : "save",
+      "sources" : [ "REPLACE0" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task_4_North_Region",
+          "name" : "Task_4_North_Region",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "FILTER2" : {
+      "action" : "filter",
+      "sources" : [ "REPLACE1" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "TEXT",
+          "field" : "Accounts_Names_formula",
+          "operator" : "EQUAL",
+          "operands" : [ "North Region" ]
+        }, {
+          "type" : "TEXT",
+          "field" : "Accounts_Names",
+          "operator" : "NOT",
+          "operands" : [ "Extra" ]
+        } ]
+      }
+    },
+    "DROP_FIELDS0" : {
+      "action" : "schema",
+      "sources" : [ "FILTER2" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Accounts_Names_formula" ]
+        }
+      }
+    },
+    "REPLACE0" : {
+      "action" : "formula",
+      "sources" : [ "DROP_FIELDS0" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Accounts_Names_replace",
+          "newProperties" : {
+            "name" : "Accounts_Names"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Accounts_Names" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Accounts_Names_replace",
+          "label" : "Accounts Names",
+          "formulaExpression" : "coalesce(Accounts_Names, null, 'Extra')"
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES11" : {
+      "action" : "schema",
+      "sources" : [ "FILTER1" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Accounts_Names",
+          "newProperties" : {
+            "label" : "Accounts Names OLD",
+            "name" : "Accounts_Names"
+          }
+        } ]
+      }
+    },
+    "EDIT_ATTRIBUTES12" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES11" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Accounts_Names_formula",
+          "newProperties" : {
+            "label" : "Accounts Names",
+            "name" : "Accounts_Names_formula"
+          }
+        } ]
+      }
+    },
+    "DROP_FIELDS1" : {
+      "action" : "schema",
+      "sources" : [ "EDIT_ATTRIBUTES12" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Accounts_Names" ]
+        }
+      }
+    },
+    "LOAD_DATASET7" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Case_Number", "Case_Type", "Updated_Date_Time", "Created_Date", "Closed_Date" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Copy of Problem Statement #5  - Sheet1 (1)",
+          "name" : "Copy_of_Problem_Statement_5_Sheet1_1"
+        }
+      }
+    },
+    "FORMULA21" : {
+      "action" : "computeRelative",
+      "sources" : [ "LOAD_DATASET7" ],
+      "parameters" : {
+        "partitionBy" : [ "Case_Number" ],
+        "orderBy" : [ {
+          "fieldName" : "Updated_Date_Time",
+          "direction" : "ASC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Case_Number_formula",
+          "label" : "Rank",
+          "formulaExpression" : "row_number()",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "EXTRACT0" : {
+      "action" : "extractGrains",
+      "sources" : [ "FILTER3" ],
+      "parameters" : {
+        "grainExtractions" : [ {
+          "source" : "Closed_Date",
+          "targets" : [ {
+            "name" : "Closed_Date_DAY",
+            "label" : "Closed Date Day",
+            "grainType" : "DAY"
+          }, {
+            "name" : "Closed_Date_MONTH",
+            "label" : "Closed Date Month",
+            "grainType" : "MONTH"
+          }, {
+            "name" : "Closed_Date_YEAR",
+            "label" : "Closed Date Year",
+            "grainType" : "YEAR"
+          } ]
+        }, {
+          "source" : "Created_Date",
+          "targets" : [ {
+            "name" : "Created_Date_DAY",
+            "label" : "Created Date Day",
+            "grainType" : "DAY"
+          }, {
+            "name" : "Created_Date_MONTH",
+            "label" : "Created Date Month",
+            "grainType" : "MONTH"
+          }, {
+            "name" : "Created_Date_YEAR",
+            "label" : "Created Date Year",
+            "grainType" : "YEAR"
+          } ]
+        } ]
+      }
+    },
+    "AGGREGATE1" : {
+      "action" : "aggregate",
+      "sources" : [ "EXTRACT0" ],
+      "parameters" : {
+        "aggregations" : [ {
+          "action" : "UNIQUE",
+          "source" : "Case_Number",
+          "name" : "UNIQUE_Case_Number",
+          "label" : "Unique Case Number"
+        } ],
+        "groupings" : [ "Case_Number", "Closed_Date_DAY", "Closed_Date_MONTH", "Closed_Date_YEAR", "Created_Date_DAY", "Created_Date_MONTH", "Created_Date_YEAR", "Case_Type" ],
+        "pivots" : [ ],
+        "nodeType" : "STANDARD"
+      }
+    },
+    "FORMULA17" : {
+      "action" : "formula",
+      "sources" : [ "AGGREGATE1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Case_Number_formula",
+          "label" : "Created Date",
+          "formulaExpression" : "concat(Created_Date_MONTH, '/' , Created_Date_DAY ,'/' , Created_Date_YEAR)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "TO_DATE1" : {
+      "action" : "typeCast",
+      "sources" : [ "FORMULA17" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Case_Number_formula_to_date",
+          "newProperties" : {
+            "name" : "Case_Number_formula"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Case_Number_formula" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Case_Number_formula",
+          "newProperties" : {
+            "label" : "Created Date",
+            "name" : "Case_Number_formula_to_date",
+            "typeProperties" : {
+              "type" : "DATETIME",
+              "format" : "MM/dd/yyyy"
+            }
+          }
+        } ]
+      }
+    },
+    "FORMULA18" : {
+      "action" : "formula",
+      "sources" : [ "TO_DATE1" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Case_Number_formula1",
+          "label" : "Closed Date",
+          "formulaExpression" : "concat(Closed_Date_MONTH, '/' , Closed_Date_DAY ,'/' , Closed_Date_YEAR)",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "TO_DATE2" : {
+      "action" : "typeCast",
+      "sources" : [ "FORMULA18" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Case_Number_formula1_to_date",
+          "newProperties" : {
+            "name" : "Case_Number_formula1"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Case_Number_formula1" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Case_Number_formula1",
+          "newProperties" : {
+            "label" : "Closed Date",
+            "name" : "Case_Number_formula1_to_date",
+            "typeProperties" : {
+              "type" : "DATETIME",
+              "format" : "MM/dd/yyyy"
+            }
+          }
+        } ]
+      }
+    },
+    "DROP_FIELDS2" : {
+      "action" : "schema",
+      "sources" : [ "TO_DATE2" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Closed_Date_DAY", "Closed_Date_MONTH", "Closed_Date_YEAR", "Created_Date_DAY", "Created_Date_MONTH", "Created_Date_YEAR", "UNIQUE_Case_Number" ]
+        }
+      }
+    },
+    "OUTPUT5" : {
+      "action" : "save",
+      "sources" : [ "FORMULA19" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 5",
+          "name" : "Task_5",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "JOIN2" : {
+      "action" : "join",
+      "sources" : [ "DROP_FIELDS2", "LOAD_DATASET7" ],
+      "schema" : {
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Updated_Time.Case_Number", "Updated_Time.Case_Type", "Updated_Time.Closed_Date", "Updated_Time.Created_Date" ]
+        }
+      },
+      "parameters" : {
+        "joinType" : "LOOKUP",
+        "leftKeys" : [ "Case_Number" ],
+        "rightQualifier" : "Updated_Time",
+        "rightKeys" : [ "Case_Number" ]
+      }
+    },
+    "SPLIT2" : {
+      "action" : "split",
+      "sources" : [ "JOIN2" ],
+      "parameters" : {
+        "sourceField" : "Updated_Time.Updated_Date_Time",
+        "delimiter" : "T",
+        "targetFields" : [ {
+          "name" : "Updated_Time.Updated_Date_Time_split",
+          "label" : "Updated Date"
+        }, {
+          "name" : "Updated_Time.Updated_Date_Time_split1",
+          "label" : "Updated Time"
+        } ]
+      }
+    },
+    "TO_DATE3" : {
+      "action" : "typeCast",
+      "sources" : [ "SPLIT2" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Updated_Time.Updated_Date_Time_split_to_date",
+          "newProperties" : {
+            "name" : "Updated_Time.Updated_Date_Time_split"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Updated_Time.Updated_Date_Time_split" ]
+        }
+      },
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Updated_Time.Updated_Date_Time_split",
+          "newProperties" : {
+            "label" : "Updated Date",
+            "name" : "Updated_Time.Updated_Date_Time_split_to_date",
+            "typeProperties" : {
+              "type" : "DATETIME",
+              "format" : "MM/dd/yyyy"
+            }
+          }
+        } ]
+      }
+    },
+    "FORMULA19" : {
+      "action" : "formula",
+      "sources" : [ "TO_DATE3" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Updated_Time.Updated_Date_Time_split_formula",
+          "label" : "days",
+          "formulaExpression" : "datediff(\"Updated_Time.Updated_Date_Time_split\", now())",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FILTER3" : {
+      "action" : "filter",
+      "sources" : [ "FORMULA21" ],
+      "parameters" : {
+        "filterExpressions" : [ {
+          "type" : "NUMBER",
+          "field" : "Case_Number_formula",
+          "operator" : "EQUAL",
+          "operands" : [ "1" ]
+        } ]
+      }
+    },
+    "LOAD_DATASET8" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Region", "Employee_Name", "Team", "City", "Feburary", "May", "March", "January", "April" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Window Function Dataset - Window Function Dataset",
+          "name" : "Window_Function_Dataset_Window_Function_Dataset"
+        }
+      }
+    },
+    "FORMULA22" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET8" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Region_formula",
+          "label" : "Total Revenue",
+          "formulaExpression" : "Feburary + May + March + January + April",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA23" : {
+      "action" : "computeRelative",
+      "sources" : [ "FORMULA22" ],
+      "parameters" : {
+        "partitionBy" : [ "Region" ],
+        "orderBy" : [ {
+          "fieldName" : "Region_formula",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Region_formula_formula",
+          "label" : "Region Wise Rank",
+          "formulaExpression" : "rank()",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA24" : {
+      "action" : "computeRelative",
+      "sources" : [ "FORMULA23" ],
+      "parameters" : {
+        "partitionBy" : [ "Team" ],
+        "orderBy" : [ {
+          "fieldName" : "Region_formula",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Region_formula_formula_formula",
+          "label" : "Team wise Rank",
+          "formulaExpression" : "rank()",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "FORMULA25" : {
+      "action" : "computeRelative",
+      "sources" : [ "FORMULA24" ],
+      "parameters" : {
+        "partitionBy" : [ "City" ],
+        "orderBy" : [ {
+          "fieldName" : "Region_formula",
+          "direction" : "DESC"
+        } ],
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "NUMBER",
+          "name" : "Region_formula_formula_formula_formula",
+          "label" : "City wise Rank",
+          "formulaExpression" : "Rank()",
+          "precision" : 10,
+          "scale" : 0,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "OUTPUT6" : {
+      "action" : "save",
+      "sources" : [ "FORMULA25" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 6",
+          "name" : "Task_6",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "LOAD_DATASET9" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Grocery", "Others", "Technology", "Furniture", "Date" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Copy of Problem Statement 7 _ Missing Values - Sheet1",
+          "name" : "Copy_of_Problem_Statement_7_Missing_Values_Sheet1"
+        }
+      }
+    },
+    "REPLACE2" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET9" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Grocery_replace",
+          "newProperties" : {
+            "name" : "Grocery"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Grocery" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Grocery_replace",
+          "label" : "Grocery",
+          "formulaExpression" : "coalesce(Grocery, null, '0')"
+        } ]
+      }
+    },
+    "REPLACE3" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE2" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Technology_replace",
+          "newProperties" : {
+            "name" : "Technology"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Technology" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Technology_replace",
+          "label" : "Technology",
+          "formulaExpression" : "coalesce(Technology, null, '0')"
+        } ]
+      }
+    },
+    "REPLACE4" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE3" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Furniture_replace",
+          "newProperties" : {
+            "name" : "Furniture"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Furniture" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Furniture_replace",
+          "label" : "Furniture",
+          "formulaExpression" : "coalesce(Furniture, null, '0')"
+        } ]
+      }
+    },
+    "REPLACE5" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE4" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_replace",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_replace",
+          "label" : "Others",
+          "formulaExpression" : "coalesce(Others, null, '0')"
+        } ]
+      }
+    },
+    "REPLACE6" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE5" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_replace",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_replace",
+          "label" : "Others",
+          "formulaExpression" : "replace(Others, '-', '0')"
+        } ]
+      }
+    },
+    "REPLACE7" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE6" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_replace",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_replace",
+          "label" : "Others",
+          "formulaExpression" : "replace(Others, '$0', '0')"
+        } ]
+      }
+    },
+    "REPLACE8" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE7" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_replace",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_replace",
+          "label" : "Others",
+          "formulaExpression" : "replace(Others, 'n/a', '0')"
+        } ]
+      }
+    },
+    "REPLACE10" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE8" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Grocery_replace",
+          "newProperties" : {
+            "name" : "Grocery"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Grocery" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Grocery_replace",
+          "label" : "Grocery",
+          "formulaExpression" : "replace(Grocery, '$', ' ')"
+        } ]
+      }
+    },
+    "REPLACE11" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE10" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Furniture_replace",
+          "newProperties" : {
+            "name" : "Furniture"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Furniture" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Furniture_replace",
+          "label" : "Furniture",
+          "formulaExpression" : "replace(Furniture, '$', ' ')"
+        } ]
+      }
+    },
+    "REPLACE12" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE11" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Furniture_replace",
+          "newProperties" : {
+            "name" : "Furniture"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Furniture" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Furniture_replace",
+          "label" : "Furniture",
+          "formulaExpression" : "replace(Furniture, 'thsand', 'thousand')"
+        } ]
+      }
+    },
+    "REPLACE13" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE12" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Grocery_replace",
+          "newProperties" : {
+            "name" : "Grocery"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Grocery" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Grocery_replace",
+          "label" : "Grocery",
+          "formulaExpression" : "replace(Grocery, 'hundret', 'hundred')"
+        } ]
+      }
+    },
+    "REPLACE14" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE13" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_replace",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_replace",
+          "label" : "Others",
+          "formulaExpression" : "replace(Others, 'dollar', ' ')"
+        } ]
+      }
+    },
+    "UPPERCASE0" : {
+      "action" : "formula",
+      "sources" : [ "REPLACE14" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Grocery_uppercase",
+          "newProperties" : {
+            "name" : "Grocery"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Grocery" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Grocery_uppercase",
+          "label" : "Grocery",
+          "formulaExpression" : "upper(Grocery)"
+        } ]
+      }
+    },
+    "UPPERCASE1" : {
+      "action" : "formula",
+      "sources" : [ "UPPERCASE0" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_uppercase",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_uppercase",
+          "label" : "Others",
+          "formulaExpression" : "upper(Others)"
+        } ]
+      }
+    },
+    "UPPERCASE2" : {
+      "action" : "formula",
+      "sources" : [ "UPPERCASE1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Furniture_uppercase",
+          "newProperties" : {
+            "name" : "Furniture"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Furniture" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Furniture_uppercase",
+          "label" : "Furniture",
+          "formulaExpression" : "upper(Furniture)"
+        } ]
+      }
+    },
+    "UPPERCASE3" : {
+      "action" : "formula",
+      "sources" : [ "UPPERCASE2" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Technology_uppercase",
+          "newProperties" : {
+            "name" : "Technology"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Technology" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Technology_uppercase",
+          "label" : "Technology",
+          "formulaExpression" : "upper(Technology)"
+        } ]
+      }
+    },
+    "TRIM0" : {
+      "action" : "formula",
+      "sources" : [ "UPPERCASE3" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Grocery_trim",
+          "newProperties" : {
+            "name" : "Grocery"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Grocery" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Grocery_trim",
+          "label" : "Grocery",
+          "formulaExpression" : "trim(Grocery)"
+        } ]
+      }
+    },
+    "TRIM1" : {
+      "action" : "formula",
+      "sources" : [ "TRIM0" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Technology_trim",
+          "newProperties" : {
+            "name" : "Technology"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Technology" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Technology_trim",
+          "label" : "Technology",
+          "formulaExpression" : "trim(Technology)"
+        } ]
+      }
+    },
+    "TRIM2" : {
+      "action" : "formula",
+      "sources" : [ "TRIM1" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Furniture_trim",
+          "newProperties" : {
+            "name" : "Furniture"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Furniture" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Furniture_trim",
+          "label" : "Furniture",
+          "formulaExpression" : "trim(Furniture)"
+        } ]
+      }
+    },
+    "TRIM3" : {
+      "action" : "formula",
+      "sources" : [ "TRIM2" ],
+      "schema" : {
+        "fields" : [ {
+          "name" : "Others_trim",
+          "newProperties" : {
+            "name" : "Others"
+          }
+        } ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Others" ]
+        }
+      },
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Others_trim",
+          "label" : "Others",
+          "formulaExpression" : "trim(Others)"
+        } ]
+      }
+    },
+    "OUTPUT7" : {
+      "action" : "save",
+      "sources" : [ "TRIM3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task_7",
+          "name" : "Task_7",
+          "folderName" : "SharedApp"
+        }
+      }
+    },
+    "LOAD_DATASET10" : {
+      "action" : "load",
+      "sources" : [ ],
+      "parameters" : {
+        "fields" : [ "Sales_Rep", "Q1_Revenue", "Q4_Revenue", "Q3_Revenue", "Q2_Revenue" ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "RecipeKata #8 - Sheet1",
+          "name" : "RecipeKata_8_Sheet1"
+        }
+      }
+    },
+    "FORMULA26" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q1'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS3" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA26" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q4_Revenue", "Q3_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES14" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS3" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q1_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q1_Revenue"
+          }
+        } ]
+      }
+    },
+    "FORMULA29" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q4'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS6" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA29" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q3_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES16" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS6" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q4_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q4_Revenue"
+          }
+        } ]
+      }
+    },
+    "FORMULA27" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q2'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS4" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA27" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q3_Revenue", "Q4_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES13" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS4" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q2_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Revenue"
+          }
+        } ]
+      }
+    },
+    "FORMULA28" : {
+      "action" : "formula",
+      "sources" : [ "LOAD_DATASET10" ],
+      "parameters" : {
+        "expressionType" : "SQL",
+        "fields" : [ {
+          "type" : "TEXT",
+          "name" : "Sales_Rep_formula",
+          "label" : "Quarter",
+          "formulaExpression" : "'Q3'",
+          "precision" : 255,
+          "defaultValue" : ""
+        } ]
+      }
+    },
+    "DROP_FIELDS5" : {
+      "action" : "schema",
+      "sources" : [ "FORMULA28" ],
+      "parameters" : {
+        "fields" : [ ],
+        "slice" : {
+          "mode" : "DROP",
+          "ignoreMissingFields" : true,
+          "fields" : [ "Q1_Revenue", "Q4_Revenue", "Q2_Revenue" ]
+        }
+      }
+    },
+    "EDIT_ATTRIBUTES15" : {
+      "action" : "schema",
+      "sources" : [ "DROP_FIELDS5" ],
+      "parameters" : {
+        "fields" : [ {
+          "name" : "Q3_Revenue",
+          "newProperties" : {
+            "label" : "Revenue",
+            "name" : "Q3_Revenue"
+          }
+        } ]
+      }
+    },
+    "APPEND1" : {
+      "action" : "appendV2",
+      "sources" : [ "EDIT_ATTRIBUTES14", "EDIT_ATTRIBUTES13" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q1_Revenue",
+          "bottom" : "Revenue"
+        }, {
+          "top" : "Sales_Rep_formula",
+          "bottom" : "Sales_Rep_formula"
+        } ]
+      }
+    },
+    "APPEND2" : {
+      "action" : "appendV2",
+      "sources" : [ "EDIT_ATTRIBUTES15", "EDIT_ATTRIBUTES16" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q3_Revenue",
+          "bottom" : "Q4_Revenue"
+        }, {
+          "top" : "Sales_Rep_formula",
+          "bottom" : "Sales_Rep_formula"
+        } ]
+      }
+    },
+    "APPEND3" : {
+      "action" : "appendV2",
+      "sources" : [ "APPEND1", "APPEND2" ],
+      "parameters" : {
+        "fieldMappings" : [ {
+          "top" : "Sales_Rep",
+          "bottom" : "Sales_Rep"
+        }, {
+          "top" : "Q1_Revenue",
+          "bottom" : "Q3_Revenue"
+        }, {
+          "top" : "Sales_Rep_formula",
+          "bottom" : "Sales_Rep_formula"
+        } ]
+      }
+    },
+    "OUTPUT8" : {
+      "action" : "save",
+      "sources" : [ "APPEND3" ],
+      "parameters" : {
+        "fields" : [ ],
+        "dataset" : {
+          "type" : "analyticsDataset",
+          "label" : "Task 8",
+          "name" : "Task_8",
+          "folderName" : "SharedApp"
+        }
+      }
+    }
+  },
+  "ui" : {
+    "nodes" : {
+      "LOAD_DATASET0" : {
+        "label" : "Opportunity",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 1652,
+        "graph" : {
+          "LOAD_DATASET0" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM0" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 252,
+        "left" : 1232.3,
+        "graph" : {
+          "FORMULA3" : {
+            "parameters" : {
+              "type" : "DATE_NOW_UI"
+            }
+          },
+          "EDIT_ATTRIBUTES0" : null,
+          "FORMULA4" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA5" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA6" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA7" : {
+            "parameters" : {
+              "type" : "DATE_DIFFERENCE_UI"
+            }
+          },
+          "FORMULA8" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA9" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA10" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA11" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "EDIT_ATTRIBUTES1" : null,
+          "EDIT_ATTRIBUTES2" : null,
+          "EDIT_ATTRIBUTES3" : null,
+          "EDIT_ATTRIBUTES4" : null,
+          "EDIT_ATTRIBUTES5" : null,
+          "EDIT_ATTRIBUTES6" : null,
+          "EDIT_ATTRIBUTES7" : null,
+          "EDIT_ATTRIBUTES8" : null,
+          "EDIT_ATTRIBUTES9" : null,
+          "FORMULA12" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "EDIT_ATTRIBUTES10" : null
+        },
+        "connectors" : [ {
+          "source" : "EDIT_ATTRIBUTES0",
+          "target" : "FORMULA3"
+        }, {
+          "source" : "EDIT_ATTRIBUTES1",
+          "target" : "FORMULA4"
+        }, {
+          "source" : "FORMULA3",
+          "target" : "EDIT_ATTRIBUTES1"
+        }, {
+          "source" : "EDIT_ATTRIBUTES2",
+          "target" : "FORMULA7"
+        }, {
+          "source" : "FORMULA4",
+          "target" : "EDIT_ATTRIBUTES2"
+        }, {
+          "source" : "EDIT_ATTRIBUTES3",
+          "target" : "FORMULA5"
+        }, {
+          "source" : "FORMULA7",
+          "target" : "EDIT_ATTRIBUTES3"
+        }, {
+          "source" : "EDIT_ATTRIBUTES4",
+          "target" : "FORMULA8"
+        }, {
+          "source" : "FORMULA5",
+          "target" : "EDIT_ATTRIBUTES4"
+        }, {
+          "source" : "EDIT_ATTRIBUTES5",
+          "target" : "FORMULA9"
+        }, {
+          "source" : "FORMULA8",
+          "target" : "EDIT_ATTRIBUTES5"
+        }, {
+          "source" : "EDIT_ATTRIBUTES6",
+          "target" : "FORMULA10"
+        }, {
+          "source" : "FORMULA9",
+          "target" : "EDIT_ATTRIBUTES6"
+        }, {
+          "source" : "EDIT_ATTRIBUTES7",
+          "target" : "FORMULA11"
+        }, {
+          "source" : "FORMULA10",
+          "target" : "EDIT_ATTRIBUTES7"
+        }, {
+          "source" : "EDIT_ATTRIBUTES8",
+          "target" : "FORMULA6"
+        }, {
+          "source" : "FORMULA11",
+          "target" : "EDIT_ATTRIBUTES8"
+        }, {
+          "source" : "FORMULA6",
+          "target" : "EDIT_ATTRIBUTES9"
+        }, {
+          "source" : "EDIT_ATTRIBUTES9",
+          "target" : "FORMULA12"
+        }, {
+          "source" : "FORMULA12",
+          "target" : "EDIT_ATTRIBUTES10"
+        } ]
+      },
+      "OUTPUT0" : {
+        "label" : "Output : Task 2",
+        "type" : "OUTPUT",
+        "top" : 252.10000000000002,
+        "left" : 812
+      },
+      "LOAD_DATASET1" : {
+        "label" : "User",
+        "type" : "LOAD_DATASET",
+        "top" : 392,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET1" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "LOAD_DATASET2" : {
+        "label" : "UserRole",
+        "type" : "LOAD_DATASET",
+        "top" : 532,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET2" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN0" : {
+        "label" : "Join",
+        "type" : "JOIN",
+        "top" : 392,
+        "left" : 252
+      },
+      "OUTPUT1" : {
+        "label" : "Output : Task 1",
+        "type" : "OUTPUT",
+        "top" : 252,
+        "left" : 672
+      },
+      "TRANSFORM2" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 532,
+        "left" : 252,
+        "graph" : {
+          "FLATTEN0" : null
+        },
+        "connectors" : [ ]
+      },
+      "LOAD_DATASET3" : {
+        "label" : "Opportunity",
+        "type" : "LOAD_DATASET",
+        "top" : 252,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET3" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "JOIN1" : {
+        "label" : "Join",
+        "type" : "JOIN",
+        "top" : 392,
+        "left" : 392
+      },
+      "TRANSFORM3" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 532,
+        "graph" : {
+          "FORMULA30" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "EDIT_ATTRIBUTES17" : null,
+          "FORMULA31" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA32" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA33" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA34" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA35" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA30",
+          "target" : "EDIT_ATTRIBUTES17"
+        }, {
+          "source" : "EDIT_ATTRIBUTES17",
+          "target" : "FORMULA31"
+        }, {
+          "source" : "FORMULA31",
+          "target" : "FORMULA32"
+        }, {
+          "source" : "FORMULA32",
+          "target" : "FORMULA33"
+        }, {
+          "source" : "FORMULA33",
+          "target" : "FORMULA34"
+        }, {
+          "source" : "FORMULA34",
+          "target" : "FORMULA35"
+        } ]
+      },
+      "LOAD_DATASET4" : {
+        "label" : "Problem Statement 3 Data (Fiscal Year_Quarter) - Sheet1",
+        "type" : "LOAD_DATASET",
+        "top" : 112,
+        "left" : 112.30000000000001,
+        "graph" : {
+          "LOAD_DATASET4" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM4" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112.19999999999999,
+        "left" : 392.5,
+        "graph" : {
+          "SPLIT0" : null,
+          "SPLIT1" : null,
+          "FORMULA13" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "TO_DATE0" : null,
+          "FORMULA14" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA15" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "TO_MEASURE0" : null
+        },
+        "connectors" : [ {
+          "source" : "SPLIT0",
+          "target" : "SPLIT1"
+        }, {
+          "source" : "SPLIT1",
+          "target" : "FORMULA13"
+        }, {
+          "source" : "FORMULA13",
+          "target" : "TO_DATE0"
+        }, {
+          "source" : "TO_DATE0",
+          "target" : "FORMULA14"
+        }, {
+          "source" : "FORMULA14",
+          "target" : "FORMULA15"
+        }, {
+          "source" : "FORMULA15",
+          "target" : "TO_MEASURE0"
+        } ]
+      },
+      "OUTPUT2" : {
+        "label" : "Output : Task 3",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 672
+      },
+      "LOAD_DATASET5" : {
+        "label" : "Problem Statement 4 data (Remove common Accounts) - West Accounts (1)",
+        "type" : "LOAD_DATASET",
+        "top" : 392.2,
+        "left" : 1232,
+        "graph" : {
+          "LOAD_DATASET5" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "LOAD_DATASET6" : {
+        "label" : "Problem Statement 4 data (Remove common Accounts) - East Accounts",
+        "type" : "LOAD_DATASET",
+        "top" : 532.1,
+        "left" : 1232.4,
+        "graph" : {
+          "LOAD_DATASET6" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "APPEND0" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 392,
+        "left" : 1372
+      },
+      "TRANSFORM5" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 1512,
+        "graph" : {
+          "FORMULA16" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "REPLACE1" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "FORMULA16",
+          "target" : "REPLACE1"
+        } ]
+      },
+      "OUTPUT3" : {
+        "label" : "Output : Task 4",
+        "type" : "OUTPUT",
+        "top" : 392,
+        "left" : 812
+      },
+      "FILTER1" : {
+        "label" : "Filter",
+        "type" : "FILTER",
+        "top" : 392.1,
+        "left" : 1652.1
+      },
+      "OUTPUT4" : {
+        "label" : "Output : Task 4 Bonus",
+        "type" : "OUTPUT",
+        "top" : 532,
+        "left" : 812
+      },
+      "FILTER2" : {
+        "label" : "Filter",
+        "type" : "FILTER",
+        "top" : 532.4,
+        "left" : 1512
+      },
+      "TRANSFORM7" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 531.5,
+        "left" : 1792.1,
+        "graph" : {
+          "DROP_FIELDS0" : null,
+          "REPLACE0" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "DROP_FIELDS0",
+          "target" : "REPLACE0"
+        } ]
+      },
+      "TRANSFORM8" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 392,
+        "left" : 1792.1,
+        "graph" : {
+          "EDIT_ATTRIBUTES11" : null,
+          "EDIT_ATTRIBUTES12" : null,
+          "DROP_FIELDS1" : null
+        },
+        "connectors" : [ {
+          "source" : "EDIT_ATTRIBUTES11",
+          "target" : "EDIT_ATTRIBUTES12"
+        }, {
+          "source" : "EDIT_ATTRIBUTES12",
+          "target" : "DROP_FIELDS1"
+        } ]
+      },
+      "LOAD_DATASET7" : {
+        "label" : "Copy of Problem Statement #5  - Sheet1 (1)",
+        "type" : "LOAD_DATASET",
+        "top" : 112.1,
+        "left" : 952.1,
+        "graph" : {
+          "LOAD_DATASET7" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM9" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 1092,
+        "graph" : {
+          "FORMULA21" : null
+        },
+        "connectors" : [ ]
+      },
+      "AGGREGATE0" : {
+        "label" : "Aggregate",
+        "type" : "AGGREGATE",
+        "top" : 112,
+        "left" : 1372,
+        "graph" : {
+          "EXTRACT0" : null,
+          "AGGREGATE1" : null
+        },
+        "connectors" : [ {
+          "source" : "EXTRACT0",
+          "target" : "AGGREGATE1"
+        } ]
+      },
+      "TRANSFORM10" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 1512,
+        "graph" : {
+          "FORMULA17" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "TO_DATE1" : null,
+          "FORMULA18" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "TO_DATE2" : null,
+          "DROP_FIELDS2" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA17",
+          "target" : "TO_DATE1"
+        }, {
+          "source" : "TO_DATE1",
+          "target" : "FORMULA18"
+        }, {
+          "source" : "FORMULA18",
+          "target" : "TO_DATE2"
+        }, {
+          "source" : "TO_DATE2",
+          "target" : "DROP_FIELDS2"
+        } ]
+      },
+      "OUTPUT5" : {
+        "label" : "Output : Task 5",
+        "type" : "OUTPUT",
+        "top" : 112,
+        "left" : 812
+      },
+      "JOIN2" : {
+        "label" : "Join",
+        "type" : "JOIN",
+        "top" : 112,
+        "left" : 1652
+      },
+      "TRANSFORM11" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 112,
+        "left" : 1792,
+        "graph" : {
+          "SPLIT2" : null,
+          "TO_DATE3" : null,
+          "FORMULA19" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "SPLIT2",
+          "target" : "TO_DATE3"
+        }, {
+          "source" : "TO_DATE3",
+          "target" : "FORMULA19"
+        } ]
+      },
+      "FILTER3" : {
+        "label" : "Filter",
+        "type" : "FILTER",
+        "top" : 112,
+        "left" : 1232
+      },
+      "LOAD_DATASET8" : {
+        "label" : "Window Function Dataset - Window Function Dataset",
+        "type" : "LOAD_DATASET",
+        "top" : 672,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET8" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM12" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 672,
+        "left" : 392.2,
+        "graph" : {
+          "FORMULA22" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "FORMULA23" : null,
+          "FORMULA24" : null,
+          "FORMULA25" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA22",
+          "target" : "FORMULA23"
+        }, {
+          "source" : "FORMULA23",
+          "target" : "FORMULA24"
+        }, {
+          "source" : "FORMULA24",
+          "target" : "FORMULA25"
+        } ]
+      },
+      "OUTPUT6" : {
+        "label" : "Output: Task 6",
+        "type" : "OUTPUT",
+        "top" : 392,
+        "left" : 672
+      },
+      "LOAD_DATASET9" : {
+        "label" : "Copy of Problem Statement 7 _ Missing Values - Sheet1",
+        "type" : "LOAD_DATASET",
+        "top" : 812,
+        "left" : 112,
+        "graph" : {
+          "LOAD_DATASET9" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM13" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 812,
+        "left" : 252,
+        "graph" : {
+          "REPLACE2" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE3" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE4" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE5" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE6" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE7" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE8" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE10" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE11" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE12" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE13" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "REPLACE14" : {
+            "parameters" : {
+              "type" : "REPLACE_UI"
+            }
+          },
+          "UPPERCASE0" : {
+            "parameters" : {
+              "type" : "UPPER_UI"
+            }
+          },
+          "UPPERCASE1" : {
+            "parameters" : {
+              "type" : "UPPER_UI"
+            }
+          },
+          "UPPERCASE2" : {
+            "parameters" : {
+              "type" : "UPPER_UI"
+            }
+          },
+          "UPPERCASE3" : {
+            "parameters" : {
+              "type" : "UPPER_UI"
+            }
+          },
+          "TRIM0" : {
+            "parameters" : {
+              "type" : "TRIM_UI"
+            }
+          },
+          "TRIM1" : {
+            "parameters" : {
+              "type" : "TRIM_UI"
+            }
+          },
+          "TRIM2" : {
+            "parameters" : {
+              "type" : "TRIM_UI"
+            }
+          },
+          "TRIM3" : {
+            "parameters" : {
+              "type" : "TRIM_UI"
+            }
+          }
+        },
+        "connectors" : [ {
+          "source" : "REPLACE2",
+          "target" : "REPLACE3"
+        }, {
+          "source" : "REPLACE3",
+          "target" : "REPLACE4"
+        }, {
+          "source" : "REPLACE4",
+          "target" : "REPLACE5"
+        }, {
+          "source" : "REPLACE5",
+          "target" : "REPLACE6"
+        }, {
+          "source" : "REPLACE6",
+          "target" : "REPLACE7"
+        }, {
+          "source" : "REPLACE7",
+          "target" : "REPLACE8"
+        }, {
+          "source" : "REPLACE8",
+          "target" : "REPLACE10"
+        }, {
+          "source" : "REPLACE10",
+          "target" : "REPLACE11"
+        }, {
+          "source" : "REPLACE11",
+          "target" : "REPLACE12"
+        }, {
+          "source" : "REPLACE12",
+          "target" : "REPLACE13"
+        }, {
+          "source" : "REPLACE13",
+          "target" : "REPLACE14"
+        }, {
+          "source" : "REPLACE14",
+          "target" : "UPPERCASE0"
+        }, {
+          "source" : "UPPERCASE0",
+          "target" : "UPPERCASE1"
+        }, {
+          "source" : "UPPERCASE1",
+          "target" : "UPPERCASE2"
+        }, {
+          "source" : "UPPERCASE2",
+          "target" : "UPPERCASE3"
+        }, {
+          "source" : "UPPERCASE3",
+          "target" : "TRIM0"
+        }, {
+          "source" : "TRIM0",
+          "target" : "TRIM1"
+        }, {
+          "source" : "TRIM1",
+          "target" : "TRIM2"
+        }, {
+          "source" : "TRIM2",
+          "target" : "TRIM3"
+        } ]
+      },
+      "OUTPUT7" : {
+        "label" : "Output : Task 7",
+        "type" : "OUTPUT",
+        "top" : 532,
+        "left" : 672
+      },
+      "LOAD_DATASET10" : {
+        "label" : "RecipeKata #8 - Sheet1",
+        "type" : "LOAD_DATASET",
+        "top" : 672,
+        "left" : 1232.3,
+        "graph" : {
+          "LOAD_DATASET10" : null
+        },
+        "connectors" : [ ],
+        "parameters" : {
+          "sampleSize" : 2000
+        }
+      },
+      "TRANSFORM14" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 672,
+        "left" : 1512,
+        "graph" : {
+          "FORMULA26" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS3" : null,
+          "EDIT_ATTRIBUTES14" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA26",
+          "target" : "DROP_FIELDS3"
+        }, {
+          "source" : "DROP_FIELDS3",
+          "target" : "EDIT_ATTRIBUTES14"
+        } ]
+      },
+      "TRANSFORM15" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 1092.1,
+        "left" : 1512.3,
+        "graph" : {
+          "FORMULA29" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS6" : null,
+          "EDIT_ATTRIBUTES16" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA29",
+          "target" : "DROP_FIELDS6"
+        }, {
+          "source" : "DROP_FIELDS6",
+          "target" : "EDIT_ATTRIBUTES16"
+        } ]
+      },
+      "TRANSFORM17" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 812,
+        "left" : 1513.2,
+        "graph" : {
+          "FORMULA27" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS4" : null,
+          "EDIT_ATTRIBUTES13" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA27",
+          "target" : "DROP_FIELDS4"
+        }, {
+          "source" : "DROP_FIELDS4",
+          "target" : "EDIT_ATTRIBUTES13"
+        } ]
+      },
+      "TRANSFORM18" : {
+        "label" : "Transform",
+        "type" : "TRANSFORM",
+        "top" : 952.2,
+        "left" : 1512.1,
+        "graph" : {
+          "FORMULA28" : {
+            "parameters" : {
+              "type" : "BASE_FORMULA_UI"
+            }
+          },
+          "DROP_FIELDS5" : null,
+          "EDIT_ATTRIBUTES15" : null
+        },
+        "connectors" : [ {
+          "source" : "FORMULA28",
+          "target" : "DROP_FIELDS5"
+        }, {
+          "source" : "DROP_FIELDS5",
+          "target" : "EDIT_ATTRIBUTES15"
+        } ]
+      },
+      "APPEND1" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 672,
+        "left" : 1652
+      },
+      "APPEND2" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 952,
+        "left" : 1652
+      },
+      "APPEND3" : {
+        "label" : "Append",
+        "type" : "APPEND",
+        "top" : 672,
+        "left" : 1792
+      },
+      "OUTPUT8" : {
+        "label" : "Output",
+        "type" : "OUTPUT",
+        "top" : 672,
+        "left" : 812.4
+      }
+    },
+    "connectors" : [ {
+      "source" : "LOAD_DATASET0",
+      "target" : "TRANSFORM0"
+    }, {
+      "source" : "TRANSFORM0",
+      "target" : "OUTPUT0"
+    }, {
+      "source" : "LOAD_DATASET1",
+      "target" : "JOIN0"
+    }, {
+      "source" : "TRANSFORM2",
+      "target" : "JOIN0"
+    }, {
+      "source" : "LOAD_DATASET2",
+      "target" : "TRANSFORM2"
+    }, {
+      "source" : "LOAD_DATASET3",
+      "target" : "JOIN1"
+    }, {
+      "source" : "JOIN0",
+      "target" : "JOIN1"
+    }, {
+      "source" : "JOIN1",
+      "target" : "TRANSFORM3"
+    }, {
+      "source" : "TRANSFORM3",
+      "target" : "OUTPUT1"
+    }, {
+      "source" : "LOAD_DATASET4",
+      "target" : "TRANSFORM4"
+    }, {
+      "source" : "TRANSFORM4",
+      "target" : "OUTPUT2"
+    }, {
+      "source" : "LOAD_DATASET5",
+      "target" : "APPEND0"
+    }, {
+      "source" : "LOAD_DATASET6",
+      "target" : "APPEND0"
+    }, {
+      "source" : "APPEND0",
+      "target" : "TRANSFORM5"
+    }, {
+      "source" : "TRANSFORM8",
+      "target" : "OUTPUT3"
+    }, {
+      "source" : "TRANSFORM5",
+      "target" : "FILTER2"
+    }, {
+      "source" : "FILTER2",
+      "target" : "TRANSFORM7"
+    }, {
+      "source" : "TRANSFORM5",
+      "target" : "FILTER1"
+    }, {
+      "source" : "FILTER1",
+      "target" : "TRANSFORM8"
+    }, {
+      "source" : "TRANSFORM7",
+      "target" : "OUTPUT4"
+    }, {
+      "source" : "LOAD_DATASET7",
+      "target" : "TRANSFORM9"
+    }, {
+      "source" : "FILTER3",
+      "target" : "AGGREGATE0"
+    }, {
+      "source" : "AGGREGATE0",
+      "target" : "TRANSFORM10"
+    }, {
+      "source" : "TRANSFORM11",
+      "target" : "OUTPUT5"
+    }, {
+      "source" : "TRANSFORM10",
+      "target" : "JOIN2"
+    }, {
+      "source" : "LOAD_DATASET7",
+      "target" : "JOIN2"
+    }, {
+      "source" : "JOIN2",
+      "target" : "TRANSFORM11"
+    }, {
+      "source" : "TRANSFORM9",
+      "target" : "FILTER3"
+    }, {
+      "source" : "LOAD_DATASET8",
+      "target" : "TRANSFORM12"
+    }, {
+      "source" : "TRANSFORM12",
+      "target" : "OUTPUT6"
+    }, {
+      "source" : "LOAD_DATASET9",
+      "target" : "TRANSFORM13"
+    }, {
+      "source" : "TRANSFORM13",
+      "target" : "OUTPUT7"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM14"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM17"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM18"
+    }, {
+      "source" : "LOAD_DATASET10",
+      "target" : "TRANSFORM15"
+    }, {
+      "source" : "TRANSFORM14",
+      "target" : "APPEND1"
+    }, {
+      "source" : "TRANSFORM17",
+      "target" : "APPEND1"
+    }, {
+      "source" : "TRANSFORM18",
+      "target" : "APPEND2"
+    }, {
+      "source" : "TRANSFORM15",
+      "target" : "APPEND2"
+    }, {
+      "source" : "APPEND1",
+      "target" : "APPEND3"
+    }, {
+      "source" : "APPEND2",
+      "target" : "APPEND3"
+    }, {
+      "source" : "APPEND3",
+      "target" : "OUTPUT8"
+    } ],
+    "hiddenColumns" : [ ]
+  }
+}
