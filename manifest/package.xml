@@ -10,5 +10,9 @@
 		<members>*</members>
 		<name>WaveTemplateBundle</name>
 	</types>
+	<types>
+		<members>*</members>
+		<name>WaveRecipe</name>
+	</types>
 	<version>53.0</version>
 </Package>
